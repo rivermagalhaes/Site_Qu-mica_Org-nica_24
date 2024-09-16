@@ -418,7 +418,7 @@
     <p>
         Se você tiver perguntas, sugestões ou quiser discutir mais sobre o ciclo de Krebs e outros tópicos relacionados, sinta-se à vontade para entrar em contato.
     </p>
-<form onsubmit="return validateForm();">
+<form action="https://formspree.io/f/your-form-id" method="POST">
     <label for="nome">Seu Nome</label>
     <input type="text" id="nome" name="nome" placeholder="Seu Nome" required>
     
@@ -438,30 +438,47 @@
     </footer>
     <script>
         
-        function validateForm() {
-        const nome = document.getElementById('nome').value;
-        const email = document.getElementById('email').value;
-        const mensagem = document.getElementById('mensagem').value;
+// server.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 
-        if (nome.trim() === '' || email.trim() === '' || mensagem.trim() === '') {
-            alert('Por favor, preencha todos os campos.');
-            return false;
-        }
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-        if (!validateEmail(email)) {
-            alert('Por favor, insira um e-mail válido.');
-            return false;
-        }
-
-        alert('Formulário enviado com sucesso!');
-        return true; // Altere isso para false se precisar impedir o envio do formulário.
+// Configurar o transporte do Nodemailer
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // Você pode usar outro serviço de e-mail
+    auth: {
+        user: 'your-email@gmail.com',
+        pass: 'your-email-password'
     }
+});
 
-    function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
+// Endpoint para receber o formulário
+app.post('/send-email', (req, res) => {
+    const { nome, email, mensagem } = req.body;
+
+    const mailOptions = {
+        from: email,
+        to: 'rivermagalhaes@gmail.com',
+        subject: `Nova mensagem de ${nome}`,
+        text: mensagem
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return res.status(500).send('Erro ao enviar e-mail.');
+        }
+        res.status(200).send('Mensagem enviada com sucesso!');
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Servidor rodando na porta 3000');
+});
         
-    </script>
+</script>
 </body>
 </html>
