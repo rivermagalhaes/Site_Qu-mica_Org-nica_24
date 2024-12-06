@@ -392,7 +392,6 @@
 <section id="contato">
     <!-- Referência do período 05/09 até 11/09 -->
     <footer>
-        <p><strong>Referência:</strong> Entre 05 de setembro e 11 de setembro
     <h2>Entre em Contato</h2>
     <p>
         Se você tiver perguntas, sugestões ou quiser discutir mais sobre o ciclo de Krebs e outros tópicos relacionados, sinta-se à vontade para entrar em contato.
@@ -409,6 +408,7 @@
         
         <input type="submit" value="Enviar">
     </form>
+    <p><strong>Referência:</strong> Entre 05 de setembro e 11 de setembro</p>
 </section>
 
 <footer>
@@ -435,20 +435,6 @@
             alert("Erro ao enviar a mensagem. Tente novamente.");
         });
     });
-</script>
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return res.status(500).send('Erro ao enviar e-mail.');
-        }
-        res.status(200).send('Mensagem enviada com sucesso!');
-    });
-});
-
-app.listen(3000, () => {
-    console.log('Servidor rodando na porta 3000');
-});
-        
 </script>
 </body>
 </html>
